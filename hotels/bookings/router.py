@@ -1,11 +1,15 @@
 from fastapi import APIRouter
 from hotels.bookings.dao import BookingDAO
-from hotels.dao.base import BaseDAO
+from hotels.bookings.schemes import SBooking
 
 router = APIRouter(prefix='/bookings', tags=['Bookings'])
 
 
-@router.get('/')
+@router.get('/', response_model=list[SBooking])
 async def get_bookings():
-    result = await BookingDAO.get_all()
-    return result
+    return await BookingDAO.get_all()
+
+@router.get('/{id}', response_model=SBooking)
+async def get_bookings_id(id: int): 
+    return await BookingDAO.get_by_id(model_id=id)
+

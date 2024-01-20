@@ -24,13 +24,8 @@ class HotelsSearchArgs():
         self.stars = stars;
 
 
-class SHotel(BaseModel):
-    name: str
-    address: str
-    stars: int
 
-
-@app.get('/hotels/', response_model=SHotel)
+@app.get('/hotels/')
 def index(
         search_args: HotelsSearchArgs = Depends()
     ):
@@ -45,11 +40,6 @@ def index(
 
     return hotels[0]
 
-class SBooking(BaseModel):
-    room_id: int
-    date_from: str
-    date_to: str
-
 @app.post('/booking')
-def add_bookings(booking: SBooking):
+def add_bookings():
     pass
