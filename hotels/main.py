@@ -6,7 +6,9 @@ from pydantic import BaseModel
 from hotels import app
 
 from hotels.bookings.router import router as booking_router
+from hotels.users.router import router as auth_router
 
+app.include_router(auth_router)
 app.include_router(booking_router)
 
 class HotelsSearchArgs():
