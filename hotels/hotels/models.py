@@ -6,9 +6,9 @@ class Hotels(Base):
     __tablename__ = 'hotels'
 
     id = Column(Integer, primary_key=True, nullable=False)
-    name = Column(String(length=30), unique=True, nullable=False)
-    location = Column(String(length=30), nullable=False)
-    servises = Column(JSON())
+    name = Column(String, unique=True, nullable=False)
+    location = Column(String, nullable=False)
+    services = Column(JSON, nullable=True)
     rooms_quantity = Column(Integer, nullable=False)
     image_id = Column(Integer)
 
@@ -18,8 +18,8 @@ class Room(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     hotel_id = Column(ForeignKey('hotels.id'), nullable=False)
-    name = Column(String(30), nullable=False, unique=True)
-    description = Column(String(1024), nullable=False)
+    name = Column(String, nullable=False, unique=True)
+    description = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
     services = Column(JSON, nullable=True)
     quantity = Column(Integer, nullable=False)

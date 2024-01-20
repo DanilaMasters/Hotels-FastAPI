@@ -10,7 +10,9 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from hotels.database import DATABASE_URL, Base
-from hotels.hotels.models import Hotels
+from hotels.hotels.models import Hotels, Room
+from hotels.bookings.models import Booking
+from hotels.users.models import User
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
