@@ -1,0 +1,1 @@
+Hotels FastAPI project.
