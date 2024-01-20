@@ -5,6 +5,9 @@ from fastapi import Depends, Query
 from pydantic import BaseModel
 from hotels import app
 
+from hotels.bookings.router import router as booking_router
+
+app.include_router(booking_router)
 
 class HotelsSearchArgs():
     def __init__(self,
@@ -25,6 +28,7 @@ class SHotel(BaseModel):
     name: str
     address: str
     stars: int
+
 
 @app.get('/hotels/', response_model=SHotel)
 def index(
