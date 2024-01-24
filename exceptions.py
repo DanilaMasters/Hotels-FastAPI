@@ -43,3 +43,8 @@ class CurrentUserIdErrorException(BaseException):
 class NoSuchUserException(BaseException):
     status_code = 401
     detail = 'No such user'
+
+
+class RoomCannotBeBookedException(BaseException):
+    status_code = 409
+    detail = 'No Rooms Left'
