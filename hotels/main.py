@@ -1,47 +1,29 @@
-from datetime import date
-from typing import Optional
-
-from fastapi import Depends, Query
-from pydantic import BaseModel
 from hotels import app
+
+from fastapi.staticfiles import StaticFiles
 
 from hotels.bookings.router import router as booking_router
 from hotels.users.router import router as auth_router
+from hotels.hotels.router import router as hotels_router
+from hotels.pages.router import router as pages_router
+from hotels.images.router import router as images_router
+
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
+
+from redis import asyncio as aioredis
+
+app.mount('/static', StaticFiles(directory='hotels/static'), 'static')
 
 app.include_router(auth_router)
 app.include_router(booking_router)
-
-class HotelsSearchArgs():
-    def __init__(self,
-        location: str,
-        date_from:date ,
-        date_to: date,
-        has_spa: Optional[bool] = None,
-        stars: Optional[int] = Query(title="Number if stars", ge=1, le=5)          
-    ):
-        self.location = location;
-        self.date_from = date_from;
-        self.date_to = date_to;
-        self.has_spa = has_spa;
-        self.stars = stars;
+app.include_router(hotels_router)
+app.include_router(pages_router)
+app.include_router(images_router)
 
 
-
-@app.get('/hotels/')
-def index(
-        search_args: HotelsSearchArgs = Depends()
-    ):
-
-    hotels = [
-        {
-            'name': 'Hotel',
-            'address': 'Address',
-            'stars': 5
-        }
-    ]
-
-    return hotels[0]
-
-@app.post('/booking')
-def add_bookings():
-    pass
+@app.on_event("startup")
+async def startup():
+    redis = aioredis.from_url("redis://localhost")
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
