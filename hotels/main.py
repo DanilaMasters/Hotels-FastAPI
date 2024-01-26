@@ -3,6 +3,7 @@ from hotels import app
 from fastapi.staticfiles import StaticFiles
 
 from hotels.bookings.router import router as booking_router
+from hotels.config import REDIS_HOST, REDIS_PORT
 from hotels.users.router import router as auth_router
 from hotels.hotels.router import router as hotels_router
 from hotels.pages.router import router as pages_router
@@ -25,5 +26,5 @@ app.include_router(images_router)
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://localhost")
+    redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
